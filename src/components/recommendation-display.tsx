@@ -23,7 +23,7 @@ export function RecommendationDisplay({ data }: { data: DailyRecommendationOutpu
           <IconWrapper>
             <BrainCircuit className="h-6 w-6" />
           </IconWrapper>
-          <CardTitle className="font-headline text-2xl">Tu perfil emocional de hoy</CardTitle>
+          <CardTitle className="font-headline text-2xl">Tu perfil de hoy</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-lg leading-relaxed">{emotionalProfile}</p>
@@ -35,7 +35,7 @@ export function RecommendationDisplay({ data }: { data: DailyRecommendationOutpu
           <IconWrapper>
             <BookOpen className="h-6 w-6" />
           </IconWrapper>
-          <CardTitle className="font-headline text-2xl">Recomendación personalizada</CardTitle>
+          <CardTitle className="font-headline text-2xl">Recomendación del día</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-lg leading-relaxed">{recommendation}</p>
@@ -47,7 +47,7 @@ export function RecommendationDisplay({ data }: { data: DailyRecommendationOutpu
           <IconWrapper>
             <Gamepad2 className="h-6 w-6" />
           </IconWrapper>
-          <CardTitle className="font-headline text-2xl">Actividad final</CardTitle>
+          <CardTitle className="font-headline text-2xl">Actividad recomendada</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-lg leading-relaxed">{finalActivity}</p>

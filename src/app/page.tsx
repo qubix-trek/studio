@@ -24,7 +24,7 @@ export default function Home() {
       const result = await getDailyRecommendation(data);
       setRecommendation(result);
     } catch (e) {
-      setError("Sorry, we couldn't generate a recommendation. The model might be busy. Please try again in a moment.");
+      setError("Lo siento, no pudimos generar una recomendación. El modelo podría estar ocupado. Por favor, inténtalo de nuevo en un momento.");
       console.error(e);
     } finally {
       setIsLoading(false);
@@ -53,12 +53,12 @@ export default function Home() {
             <div className="animate-in fade-in duration-500">
               <Alert variant="destructive" className="border-2">
                 <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Something went wrong</AlertTitle>
+                <AlertTitle>Algo salió mal</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
               <div className="text-center mt-6">
                 <Button variant="outline" onClick={handleReset}>
-                  Try Again
+                  Intentar de nuevo
                 </Button>
               </div>
             </div>
@@ -66,14 +66,14 @@ export default function Home() {
             <div className="animate-in fade-in-50 slide-in-from-bottom-5 duration-500">
               <RecommendationDisplay data={recommendation} />
               <div className="text-center mt-8">
-                <Button onClick={handleReset}>Get a New Dose</Button>
+                <Button onClick={handleReset}>Obtener una nueva dosis</Button>
               </div>
             </div>
           ) : (
             <div className="space-y-6 text-center animate-in fade-in duration-500">
-              <h2 className="text-4xl font-headline text-foreground">Your daily pause for mental wellness.</h2>
+              <h2 className="text-4xl font-headline text-foreground">Tu pausa diaria para el bienestar mental.</h2>
               <p className="text-muted-foreground max-w-lg mx-auto text-lg">
-                Tell us how you're feeling, and we'll provide a personalized dose of mindfulness to help you navigate your day with more calm and clarity.
+                Cuéntanos cómo te sientes y te daremos una dosis personalizada de mindfulness para ayudarte a navegar tu día con más calma y claridad.
               </p>
               <RecommendationForm onSubmit={handleGetRecommendation} isLoading={isLoading} />
             </div>
@@ -82,7 +82,7 @@ export default function Home() {
       </main>
 
       <footer className="container mx-auto px-4 py-6 text-center text-muted-foreground text-sm">
-        <p>&copy; {new Date().getFullYear()} Mindful Daily Dose. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Mindful Daily Dose. Todos los derechos reservados.</p>
       </footer>
     </div>
   );
