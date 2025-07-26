@@ -14,7 +14,7 @@ const IconWrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 export function RecommendationDisplay({ data }: { data: DailyRecommendationOutput }) {
-  const { recommendation, explanation, exercise } = data;
+  const { emotionalProfile, recommendation, finalActivity } = data;
 
   return (
     <div className="space-y-6">
@@ -23,10 +23,10 @@ export function RecommendationDisplay({ data }: { data: DailyRecommendationOutpu
           <IconWrapper>
             <BrainCircuit className="h-6 w-6" />
           </IconWrapper>
-          <CardTitle className="font-headline text-2xl">Recommendation of the Day</CardTitle>
+          <CardTitle className="font-headline text-2xl">Tu perfil emocional de hoy</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-lg leading-relaxed">{recommendation}</p>
+          <p className="text-lg leading-relaxed">{emotionalProfile}</p>
         </CardContent>
       </Card>
 
@@ -35,10 +35,10 @@ export function RecommendationDisplay({ data }: { data: DailyRecommendationOutpu
           <IconWrapper>
             <BookOpen className="h-6 w-6" />
           </IconWrapper>
-          <CardTitle className="font-headline text-2xl">Professional Explanation</CardTitle>
+          <CardTitle className="font-headline text-2xl">Recomendación personalizada</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-lg leading-relaxed">{explanation}</p>
+          <p className="text-lg leading-relaxed">{recommendation}</p>
         </CardContent>
       </Card>
 
@@ -47,10 +47,10 @@ export function RecommendationDisplay({ data }: { data: DailyRecommendationOutpu
           <IconWrapper>
             <Gamepad2 className="h-6 w-6" />
           </IconWrapper>
-          <CardTitle className="font-headline text-2xl">Interactive Exercise</CardTitle>
+          <CardTitle className="font-headline text-2xl">Actividad final</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-lg leading-relaxed">{exercise}</p>
+          <p className="text-lg leading-relaxed">{finalActivity}</p>
         </CardContent>
       </Card>
 

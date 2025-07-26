@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { DailyRecommendationOutput } from '@/ai/flows/daily-recommendation';
+import type { DailyRecommendationOutput, DailyRecommendationInput } from '@/ai/flows/daily-recommendation';
 import { getDailyRecommendation } from '@/ai/flows/daily-recommendation';
 import { RecommendationForm } from '@/components/recommendation-form';
 import { RecommendationDisplay } from '@/components/recommendation-display';
@@ -16,7 +16,7 @@ export default function Home() {
   const [recommendation, setRecommendation] = useState<DailyRecommendationOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const handleGetRecommendation = async (data: { mood: string; stressors: string }) => {
+  const handleGetRecommendation = async (data: DailyRecommendationInput) => {
     setIsLoading(true);
     setRecommendation(null);
     setError(null);

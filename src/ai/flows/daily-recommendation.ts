@@ -13,15 +13,17 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const DailyRecommendationInputSchema = z.object({
-  mood: z.string().describe('The current mood of the user.'),
-  stressors: z.string().describe('The current stressors in the user\'s life.'),
+  mood: z.string().describe('The user\'s current feeling (e.g., Calm, Anxious, Sad, Irritated).'),
+  activityPreference: z.string().describe('The user\'s preference for active or calm activities.'),
+  copingPreference: z.string().describe('The user\'s preferred coping mechanism (e.g., writing, moving, breathing, reflecting).'),
+  timeAvailable: z.string().describe('The amount of time the user has available (e.g., 2, 5, or 10 minutes).'),
 });
 export type DailyRecommendationInput = z.infer<typeof DailyRecommendationInputSchema>;
 
 const DailyRecommendationOutputSchema = z.object({
-  recommendation: z.string().describe('A daily mental health recommendation.'),
-  explanation: z.string().describe('A brief scientific explanation of why the technique is useful.'),
-  exercise: z.string().describe('A brief interactive exercise to help the user apply the recommendation.'),
+  emotionalProfile: z.string().describe("A warm and empathetic description of the user's emotional profile based on their answers."),
+  recommendation: z.string().describe('A practical, evidence-based personalized recommendation.'),
+  finalActivity: z.string().describe('A final activity including its name, how to do it, and its objective.'),
 });
 export type DailyRecommendationOutput = z.infer<typeof DailyRecommendationOutputSchema>;
 
@@ -33,23 +35,23 @@ const prompt = ai.definePrompt({
   name: 'dailyRecommendationPrompt',
   input: {schema: DailyRecommendationInputSchema},
   output: {schema: DailyRecommendationOutputSchema},
-  prompt: `You are an expert in mental health and emotional well-being. Your task is to generate a brief, practical, and empathetic recommendation for people experiencing anxiety or stress.
+  prompt: `You are an empathetic and expert mental wellness coach. Your task is to guide users through a brief, intelligent flow to help them manage anxiety and stress.
 
-The recommendation should be based on validated techniques such as mindfulness, cognitive-behavioral therapy, conscious breathing, journaling, or moderate physical activity.
+Analyze the user's survey responses to generate a personalized and supportive experience.
 
-In addition to the recommendation, include a brief scientific explanation (1 or 2 sentences) of why this technique is useful.
+User's Survey Responses:
+1.  How are you feeling today? {{{mood}}}
+2.  Do you prefer active or calm activities? {{{activityPreference}}}
+3.  What helps you process emotions? {{{copingPreference}}}
+4.  How much time do you have? {{{timeAvailable}}} minutes
 
-Finally, propose a brief activity or simple and interactive game that helps the user apply what they have learned in a fun way. The games should be short, accessible, and may include exercises such as guided breathing, gratitude challenges, emotional memory games, positive affirmations, or brief meditation.
+Based on these answers, generate the following content in a warm, motivating, and clear tone, suitable for a mental wellness app.
 
-Use a close, motivating tone, without technicalities, and appropriate for all audiences. The content should be able to be displayed directly in a mental wellness app focused on reducing daily stress.
+**Output Format:**
 
-Consider the user's current mood: {{{mood}}}. Also consider the user's current stressors: {{{stressors}}}.
-
-Output Format:
-
-1. 🧠 Recommendation of the day: [Text motivator and practical]
-2. 📘 Professional explanation: [Scientific base in simple language]
-3. 🎮 Mini game / exercise of the day: [Name + brief description + objective] `,
+1.  **🧠 Tu perfil emocional de hoy:** [Provide a warm, empathetic description of the user's emotional state based on their responses. Frame it positively, like a kind therapist. For example: "Parece que hoy necesitas un momento de calma y conexión contigo mismo. No estás solo, y es genial que hayas dado este paso para cuidarte."]
+2.  **📘 Recomendación personalizada:** [Generate a practical, evidence-based recommendation for managing anxiety or stress, tailored to the user's profile. Use validated techniques like mindfulness, breathing, journaling, visualization, or conscious movement.]
+3.  **🎮 Actividad final:** [Propose a brief, interactive game or practical exercise adapted to the user's preferences. It should include a name, clear instructions on how to do it, and its objective. Examples: guided breathing, short meditation, gratitude challenge, gentle physical exercise, or affirmations.]`,
 });
 
 const dailyRecommendationFlow = ai.defineFlow(
