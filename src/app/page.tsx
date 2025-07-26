@@ -72,9 +72,6 @@ export default function Home() {
           ) : (
             <div className="space-y-6 text-center animate-in fade-in duration-500">
               <h2 className="text-4xl font-headline text-foreground">Tu pausa diaria para el bienestar mental.</h2>
-              <p className="text-muted-foreground max-w-lg mx-auto text-lg">
-                Cuéntanos cómo te sientes y te daremos una dosis personalizada de mindfulness para ayudarte a navegar tu día con más calma y claridad.
-              </p>
               <RecommendationForm onSubmit={handleGetRecommendation} isLoading={isLoading} />
             </div>
           )}

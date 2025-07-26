@@ -14,7 +14,7 @@ const IconWrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 export function RecommendationDisplay({ data }: { data: DailyRecommendationOutput }) {
-  const { emotionalProfile, recommendation, finalActivity } = data;
+  const { feeling, recommendation, activity } = data;
 
   return (
     <div className="space-y-6">
@@ -23,10 +23,10 @@ export function RecommendationDisplay({ data }: { data: DailyRecommendationOutpu
           <IconWrapper>
             <BrainCircuit className="h-6 w-6" />
           </IconWrapper>
-          <CardTitle className="font-headline text-2xl">Tu perfil de hoy</CardTitle>
+          <CardTitle className="font-headline text-2xl">Lo que estás sintiendo</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-lg leading-relaxed">{emotionalProfile}</p>
+          <p className="text-lg leading-relaxed">{feeling}</p>
         </CardContent>
       </Card>
 
@@ -35,7 +35,7 @@ export function RecommendationDisplay({ data }: { data: DailyRecommendationOutpu
           <IconWrapper>
             <BookOpen className="h-6 w-6" />
           </IconWrapper>
-          <CardTitle className="font-headline text-2xl">Recomendación del día</CardTitle>
+          <CardTitle className="font-headline text-2xl">Recomendación personalizada</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-lg leading-relaxed">{recommendation}</p>
@@ -47,10 +47,10 @@ export function RecommendationDisplay({ data }: { data: DailyRecommendationOutpu
           <IconWrapper>
             <Gamepad2 className="h-6 w-6" />
           </IconWrapper>
-          <CardTitle className="font-headline text-2xl">Actividad recomendada</CardTitle>
+          <CardTitle className="font-headline text-2xl">Actividad para ti</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-lg leading-relaxed">{finalActivity}</p>
+          <p className="text-lg leading-relaxed">{activity}</p>
         </CardContent>
       </Card>
 
