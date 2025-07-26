@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
 import { Textarea } from './ui/textarea';
@@ -36,7 +36,6 @@ export function RecommendationForm({ onSubmit, isLoading }: RecommendationFormPr
               name="userInput"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-lg font-headline">🔹 Escribe cómo te sientes hoy y qué necesitas en este momento.</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Ej: “Me siento abrumado, necesito descansar” o “Estoy triste y quiero motivación”"

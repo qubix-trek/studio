@@ -14,7 +14,7 @@ const IconWrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 export function RecommendationDisplay({ data }: { data: DailyRecommendationOutput }) {
-  const { feeling, recommendation, activity } = data;
+  const { emotionalState, recommendation, suggestedActivity } = data;
 
   return (
     <div className="space-y-6">
@@ -23,10 +23,10 @@ export function RecommendationDisplay({ data }: { data: DailyRecommendationOutpu
           <IconWrapper>
             <BrainCircuit className="h-6 w-6" />
           </IconWrapper>
-          <CardTitle className="font-headline text-2xl">Lo que estás sintiendo</CardTitle>
+          <CardTitle className="font-headline text-2xl">Tu estado emocional</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-lg leading-relaxed">{feeling}</p>
+          <p className="text-lg leading-relaxed">{emotionalState}</p>
         </CardContent>
       </Card>
 
@@ -35,7 +35,7 @@ export function RecommendationDisplay({ data }: { data: DailyRecommendationOutpu
           <IconWrapper>
             <BookOpen className="h-6 w-6" />
           </IconWrapper>
-          <CardTitle className="font-headline text-2xl">Recomendación personalizada</CardTitle>
+          <CardTitle className="font-headline text-2xl">Recomendación para ti</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-lg leading-relaxed">{recommendation}</p>
@@ -47,10 +47,10 @@ export function RecommendationDisplay({ data }: { data: DailyRecommendationOutpu
           <IconWrapper>
             <Gamepad2 className="h-6 w-6" />
           </IconWrapper>
-          <CardTitle className="font-headline text-2xl">Actividad para ti</CardTitle>
+          <CardTitle className="font-headline text-2xl">Actividad sugerida</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-lg leading-relaxed">{activity}</p>
+          <p className="text-lg leading-relaxed">{suggestedActivity}</p>
         </CardContent>
       </Card>
 

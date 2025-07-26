@@ -1,39 +1,40 @@
 'use client';
 
-import { useState } from 'react';
-import type { DailyRecommendationOutput, DailyRecommendationInput } from '@/ai/flows/daily-recommendation';
-import { getDailyRecommendation } from '@/ai/flows/daily-recommendation';
-import { RecommendationForm } from '@/components/recommendation-form';
-import { RecommendationDisplay } from '@/components/recommendation-display';
-import { RecommendationSkeleton } from '@/components/recommendation-skeleton';
+import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 import { Button } from '@/components/ui/button';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertCircle } from 'lucide-react';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Logo } from '@/components/icons/logo';
 
-export default function Home() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [recommendation, setRecommendation] = useState<DailyRecommendationOutput | null>(null);
-  const [error, setError] = useState<string | null>(null);
+const surveySchema = z.object({
+  feeling: z.string({ required_error: 'Por favor, selecciona cómo te sientes.' }),
+  preference: z.string({ required_error: 'Por favor, selecciona una preferencia.' }),
+  time: z.string({ required_error: 'Por favor, selecciona cuánto tiempo tienes.' }),
+  need: z.string({ required_error: 'Por favor, selecciona qué necesitas hoy.' }),
+});
 
-  const handleGetRecommendation = async (data: DailyRecommendationInput) => {
-    setIsLoading(true);
-    setRecommendation(null);
-    setError(null);
-    try {
-      const result = await getDailyRecommendation(data);
-      setRecommendation(result);
-    } catch (e) {
-      setError("Lo siento, no pudimos generar una recomendación. El modelo podría estar ocupado. Por favor, inténtalo de nuevo en un momento.");
-      console.error(e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+type SurveyFormValues = z.infer<typeof surveySchema>;
 
-  const handleReset = () => {
-    setRecommendation(null);
-    setError(null);
+export default function SurveyPage() {
+  const router = useRouter();
+  const form = useForm<SurveyFormValues>({
+    resolver: zodResolver(surveySchema),
+  });
+
+  const onSubmit = (data: SurveyFormValues) => {
+    const params = new URLSearchParams(data);
+    router.push(`/recommendation?${params.toString()}`);
   };
 
   return (
@@ -47,38 +48,132 @@ export default function Home() {
 
       <main className="flex-grow container mx-auto px-4 py-8 flex flex-col items-center justify-center">
         <div className="w-full max-w-2xl space-y-8">
-          {isLoading ? (
-            <RecommendationSkeleton />
-          ) : error ? (
-            <div className="animate-in fade-in duration-500">
-              <Alert variant="destructive" className="border-2">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Algo salió mal</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-              <div className="text-center mt-6">
-                <Button variant="outline" onClick={handleReset}>
-                  Intentar de nuevo
-                </Button>
-              </div>
-            </div>
-          ) : recommendation ? (
-            <div className="animate-in fade-in-50 slide-in-from-bottom-5 duration-500">
-              <RecommendationDisplay data={recommendation} />
-              <div className="text-center mt-8">
-                <Button onClick={handleReset}>Obtener una nueva dosis</Button>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-6 text-center animate-in fade-in duration-500">
-              <h2 className="text-4xl font-headline text-foreground">Tu pausa diaria para el bienestar mental.</h2>
-              <RecommendationForm onSubmit={handleGetRecommendation} isLoading={isLoading} />
-            </div>
-          )}
+          <Card className="border-2 border-primary/20 shadow-lg bg-background/50 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="text-3xl font-headline text-center">Cuéntanos un poco sobre ti</CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                  <FormField
+                    control={form.control}
+                    name="feeling"
+                    render={({ field }) => (
+                      <FormItem className="space-y-3">
+                        <FormLabel className="text-lg font-semibold">1. ¿Cómo te sientes hoy?</FormLabel>
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            className="grid grid-cols-2 sm:grid-cols-3 gap-4"
+                          >
+                            {['Feliz', 'Ansioso/a', 'Triste', 'Irritado/a', 'Tranquilo/a'].map((item) => (
+                              <FormItem key={item} className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value={item} />
+                                </FormControl>
+                                <FormLabel className="font-normal text-base">{item}</FormLabel>
+                              </FormItem>
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="preference"
+                    render={({ field }) => (
+                      <FormItem className="space-y-3">
+                        <FormLabel className="text-lg font-semibold">2. ¿Qué prefieres hacer para sentirte mejor?</FormLabel>
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                             className="grid grid-cols-2 sm:grid-cols-3 gap-4"
+                          >
+                            {['Meditar', 'Respirar', 'Escribir', 'Moverte', 'Escuchar música'].map((item) => (
+                              <FormItem key={item} className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value={item} />
+                                </FormControl>
+                                <FormLabel className="font-normal text-base">{item}</FormLabel>
+                              </FormItem>
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="time"
+                    render={({ field }) => (
+                      <FormItem className="space-y-3">
+                        <FormLabel className="text-lg font-semibold">3. ¿Cuánto tiempo puedes dedicarte hoy?</FormLabel>
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            className="grid grid-cols-2 sm:grid-cols-3 gap-4"
+                          >
+                            {['2 minutos', '5 minutos', '10+ minutos'].map((item) => (
+                              <FormItem key={item} className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value={item} />
+                                </FormControl>
+                                <FormLabel className="font-normal text-base">{item}</FormLabel>
+                              </FormItem>
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="need"
+                    render={({ field }) => (
+                      <FormItem className="space-y-3">
+                        <FormLabel className="text-lg font-semibold">4. ¿Qué necesitas hoy?</FormLabel>
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            className="grid grid-cols-2 sm:grid-cols-3 gap-4"
+                          >
+                            {['Motivación', 'Calma', 'Energía', 'Conexión'].map((item) => (
+                              <FormItem key={item} className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value={item} />
+                                </FormControl>
+                                <FormLabel className="font-normal text-base">{item}</FormLabel>
+                              </FormItem>
+                            ))}
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <Button type="submit" size="lg" className="w-full">
+                    Continuar
+                  </Button>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
         </div>
       </main>
 
-      <footer className="container mx-auto px-4 py-6 text-center text-muted-foreground text-sm">
+       <footer className="container mx-auto px-4 py-6 text-center text-muted-foreground text-sm">
         <p>&copy; {new Date().getFullYear()} Mindful Daily Dose. Todos los derechos reservados.</p>
       </footer>
     </div>
